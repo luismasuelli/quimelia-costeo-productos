@@ -1,0 +1,11 @@
+body {
+    padding-top: 66px;
+}
+
+section#main {
+    margin-top: 16px;
+}
+
+section.lonely {
+    margin-top: 80px;
+}

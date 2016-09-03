@@ -35,11 +35,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'bootstrap3',
     'polymorphic',
     'grimoire.django.xmail',
     'grimoire.django.dynsettings',
-    'tinymce',
-    'rest_framework',
+    'main'
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -96,6 +96,11 @@ DATABASES = {
     }
 }
 
+# Login-related urls
+
+LOGIN_REDIRECT_URL = 'main:index'
+LOGIN_URL = 'main:login'
+
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
 
@@ -123,6 +128,15 @@ MEDIA_URL = 'http://media.quimelia.com.ec/quimelia_gestion/'
 MEDIA_ROOT = '/home/rleiva/webapps/media/quimelia_gestion/'
 
 # TODO mailing - cuando se necesite
+
+# EMAIL_HOST = 'smtp.infodataec.com'
+# EMAIL_PORT = 25
+# EMAIL_HOST_USER = 'notifications_infodataec'
+# EMAIL_HOST_PASSWORD = 'notifications$infodataec$2016'
+# EMAIL_USE_TLS = False
+# EMAIL_USE_SSL = False
+EMAIL_BACKEND = 'grimoire.django.xmail.backends.AsyncEmailBackend'
+XMAIL_BRIDGED_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 # Importing local settings
 

@@ -1,0 +1,24 @@
+{% load staticfiles %}
+{% load bootstrap3 %}
+<html>
+    <head>
+        <title>{{ SITE_TITLE }}</title>
+        <script type="text/javascript" src="{% static 'main/scripts/jquery-1.12.3.min.js' %}"></script>
+        {% bootstrap_css %}
+        {% bootstrap_javascript %}
+        <link rel="stylesheet" type="text/css" href="{% static 'main/styles/main.css' %}" />
+        <script type="text/javascript" src="{% static 'main/scripts/main.js' %}"></script>
+        {% block css_header %}{% endblock %}
+        {% block js_header %}{% endblock %}
+    </head>
+    <body>
+        {% include 'main/menu.html' with user=user site_title=SITE_TITLE only %}
+        <div class="container">
+            {% bootstrap_messages %}
+            <section id="main">
+                {% block content %}{% endblock %}
+            </section>
+        </div>
+        {% block js_footer %}{% endblock %}
+    </body>
+</html>
