@@ -62,7 +62,7 @@ class Migration(migrations.Migration):
                 ('code', models.SlugField(help_text='An internal code for the element (10 alphanumeric characters or hyphens/underscores). The code must not repeat on different records', max_length=10, unique=True, verbose_name='Code')),
                 ('enabled', models.BooleanField(default=True, help_text='When set to False, this element cannot be used anymore when pickingthese elements as related values in the corresponding fields', verbose_name='Enabled')),
                 ('notes', models.TextField(blank=True, default=b'', help_text='Optional internal notes to add to the element. Usually they determine the meaning of the element.', verbose_name='Additional Notes')),
-                ('country', catalog.fields.CatalogFK(on_delete=django.db.models.deletion.CASCADE, to='dass_geo.Country', to_field=b'code', verbose_name='Country')),
+                ('country', catalog.fields.CatalogFK(on_delete=django.db.models.deletion.CASCADE, to='geo.Country', to_field=b'code', verbose_name='Country')),
             ],
             options={
                 'ordering': ('name',),
@@ -74,6 +74,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='city',
             name='province',
-            field=catalog.fields.CatalogFK(on_delete=django.db.models.deletion.CASCADE, to='dass_geo.Province', to_field=b'code', verbose_name='Province'),
+            field=catalog.fields.CatalogFK(on_delete=django.db.models.deletion.CASCADE, to='geo.Province', to_field=b'code', verbose_name='Province'),
         ),
     ]

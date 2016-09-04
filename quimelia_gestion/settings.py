@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'polymorphic',
     'grimoire.django.xmail',
     'grimoire.django.dynsettings',
+    'grimoire.django.tracked',
+    'geo',
     'main'
 ]
 
