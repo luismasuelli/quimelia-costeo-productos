@@ -35,24 +35,6 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name='Country',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_on', models.DateTimeField(default=django.utils.timezone.now, editable=False, help_text='Date and time of record creation', verbose_name='Creation Date')),
-                ('updated_on', models.DateTimeField(default=django.utils.timezone.now, editable=False, help_text='Date and time of last record update', verbose_name='Update Date')),
-                ('name', models.CharField(help_text='A descriptive text for the element (100 characters)', max_length=100, verbose_name='Description')),
-                ('code', models.SlugField(help_text='An internal code for the element (10 alphanumeric characters or hyphens/underscores). The code must not repeat on different records', max_length=10, unique=True, verbose_name='Code')),
-                ('enabled', models.BooleanField(default=True, help_text='When set to False, this element cannot be used anymore when pickingthese elements as related values in the corresponding fields', verbose_name='Enabled')),
-                ('notes', models.TextField(blank=True, default=b'', help_text='Optional internal notes to add to the element. Usually they determine the meaning of the element.', verbose_name='Additional Notes')),
-            ],
-            options={
-                'ordering': ('name',),
-                'abstract': False,
-                'verbose_name': 'Country',
-                'verbose_name_plural': 'Country',
-            },
-        ),
-        migrations.CreateModel(
             name='Province',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
@@ -62,7 +44,6 @@ class Migration(migrations.Migration):
                 ('code', models.SlugField(help_text='An internal code for the element (10 alphanumeric characters or hyphens/underscores). The code must not repeat on different records', max_length=10, unique=True, verbose_name='Code')),
                 ('enabled', models.BooleanField(default=True, help_text='When set to False, this element cannot be used anymore when pickingthese elements as related values in the corresponding fields', verbose_name='Enabled')),
                 ('notes', models.TextField(blank=True, default=b'', help_text='Optional internal notes to add to the element. Usually they determine the meaning of the element.', verbose_name='Additional Notes')),
-                ('country', catalog.fields.CatalogFK(on_delete=django.db.models.deletion.CASCADE, to='geo.Country', to_field=b'code', verbose_name='Country')),
             ],
             options={
                 'ordering': ('name',),
