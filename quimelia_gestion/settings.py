@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'grimoire.django.dynsettings',
     'grimoire.django.tracked',
     'geo',
+    'contacts',
     'main'
 ]
 

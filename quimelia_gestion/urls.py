@@ -16,9 +16,11 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 import geo.admin
+import contacts.admin
 import main.urls
 
 geo.admin.register(admin.site)
+contacts.admin.register(admin.site)
 
 urlpatterns = [
     url(r'', include(main.urls)),
