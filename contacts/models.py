@@ -61,6 +61,10 @@ class Entity(TrackedLive):
     class Meta:
         verbose_name = _('Entity')
         verbose_name_plural = _('Entities')
+        permissions = (
+            ('list_entity', 'List Entity'),
+            ('view_entity', 'View Entity'),
+        )
 
 
 class ServiceArea(CatalogModel):
@@ -85,3 +89,7 @@ class ClientAccount(TrackedLive):
         unique_together = (('service_area', 'entity'),)
         verbose_name = _('Client Account')
         verbose_name_plural = _('Client Accounts')
+        permissions = (
+            ('list_clientaccount', 'List Client Account'),
+            ('view_clientaccount', 'View Client Account'),
+        )
