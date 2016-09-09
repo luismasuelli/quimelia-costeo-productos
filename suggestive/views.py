@@ -186,3 +186,16 @@ class SearchView(MultipleObjectMixin, View):
 
         return JsonResponse([self.build_json(obj, label_field, label_member, value_field, value_member)
                              for obj in queryset])
+
+
+def search_view(klass=SearchView, **kwargs):
+    """
+    Function-style setting -shortcut- for the SearchView.
+    :param klass: The class to use as base.
+    :param kwargs: Args for the view generation.
+    :return:
+    """
+
+    if not isinstance(klass, type) or not issubclass(klass, SearchView):
+        raise TypeError('Expected a SearchView subclass as the first argument')
+    return klass.as_view(**kwargs)
