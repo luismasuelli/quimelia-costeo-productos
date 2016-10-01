@@ -4,6 +4,7 @@ from django.views.generic import View, ListView
 from django.views.generic.list import MultipleObjectMixin
 from django.http import JsonResponse
 from django.utils.six import text_type
+from .forms import search_form_factory
 import operator
 
 
@@ -193,6 +194,7 @@ class SearchListView(ListView):
     lookup_type = 'icontains'
     search_fields = None
     search_param = 'term'
+    search_form_label = 'Search'
 
     def get_lookup_type(self):
         """
@@ -228,10 +230,26 @@ class SearchListView(ListView):
         Returns the http querystring field used for the search. By default this querystring field is 'term'.
         Either this method must be overridden or the `search_fields` member must be changed, but anyway an
           empty value (e.g. None, False) is forbidden.
-        :return:
+        :return: A string with the url param name.
         """
 
         return self.search_param
+
+    def get_search_form_label(self):
+        """
+        Paired with the `get_search_param` method, this one returns the label to display related with such param.
+        :return: A string with the form label.
+        """
+
+        return self.search_form_label
+
+    def get_search_form_class(self):
+        """
+        Paired with the `get_search_param` method, this one returns the form to display to perform searches.
+        :return: A form class
+        """
+
+        return search_form_factory(self.get_search_param(), self.get_search_form_label())
 
     def get_unsearched_queryset(self):
         """
@@ -256,6 +274,13 @@ class SearchListView(ListView):
             queryset = queryset.filter(reduce(operator.or_, [Q(**{lookup: part}) for lookup in lookup_fields]))
 
         return queryset
+
+    def get_context_data(self, **kwargs):
+        data = super(SearchListView, self).get_context_data(**kwargs)
+        data.update({
+            'form': self.get_search_form_class()(self.request.GET)
+        })
+        return data
 
 
 def search_view(klass=SearchView, **kwargs):
