@@ -1,0 +1,88 @@
+###
+# Nota: de todos los elementos de aca, ademas de que sean TrackedLiveAndDead, deberiamos poder habilitarlos y
+#   deshabilitarlos (o redefinir tal vez el concepto de TrackedLiveAndDead para que un elemento eliminado pueda
+#   ser reanimado, pero dudo). Los elementos deshabilitados no deberian ser seleccionables, pero SI deberian
+#   ser visibles para que gente que no sea staff/admin pueda devolverlos al estado de habilitación.
+###
+
+Modelos de esta aplicación:
+
+1. Más que nada tenemos que cuidarnos porque, por ejemplo, la identificación solamente debe probarse única por
+   el caso de que sea una cédula/ruc nacional (identification_type=1). Alternativamente, en el caso de los
+   pasaportes podriamos exigir que se ponga el codigo ISO de 2 letras del país antes del pasaporte. Por ejemplo:
+   AR136101 sería mi pasaporte.
+
+Vistas de esta aplicación:
+
+1. Entidades.
+
+1.1. Vista para listar entidades.
+
+Es una lista normal de entidades hecha una tabla. Adicionalmente tiene un formulario de busqueda en el cual se
+  tomara un texto y se filtrara mostrando todas las entidades que tengan ese texto en algun lado (email, cedula,
+  nombre, apellido, ...). En caso de no popularse, se trabaja con todos los elementos.
+
+Se mostrara una cantidad corta de elementos usando el PAGINADOR de Django. En cada elemento tendremos la opcion
+  para ver la entidad (sus detalles), editarla (un formulario), y borrarla (una pregunta de confirmación).
+
+1.2. Vista para crear entidades (get, post).
+
+Es un formulario normal para crear una entidad. Validará o no. Al terminar nos iremos a la lista indice (punto 1.1).
+
+1.3. Vista para borrar una entidad (get, delete).
+
+Es una pantalla con una pregunta de si quiere borrar o no cierta entidad. No podra borrarla si tiene cuentas de
+  cliente vinculadas.
+
+1.4. Vista para ver una entidad. En la misma, ademas de ver los datos, deberiamos tener una seccion donde administramos
+  las cuentas de cliente (ver más adelante para más detalles) de dicho cliente.
+
+1.5. Vista para editar entidades (get, post).
+
+Es un formulario normal para actualizar una entidad. Validará o no. Al terminar, volvemos al mismo formulario.
+Debería tener algún tipo de enlace para regresar al listado principal.
+
+1.X.1 Deberiamos conservar en cookies o en variables o algo, todos los parametros que se estan utilizando en la
+  busqueda y la paginación.
+
+2. Cuentas de cliente.
+
+Una cuenta de cliente es una relacion entre una cuenta y un area de servicio. Las cuentas de cliente se vinculan a
+  un area de servicio (se definen por el administrador!) y a una entidad. Cualquier entidad (incluso los proveedores!)
+  puede ser cliente, con tan solo crearle una cuenta.
+
+Las cuentas se administran dentro de la visibilización de una entidad, por lo que tendremos lo siguiente:
+
+2.1. Vista para listar cuentas de cliente.
+
+Ocurre como parte de la vista de visualización de una entidad. Sus cuentas de cliente se visualizarán de manera
+  sencilla ya que, como los datos son en gran mayoría parte de la entidad, solo resta que se vea el nombre del área
+  de servicio. No será necesario paginar, pero si la cosa se pone jodida, usar el paginador de Django y ponerle algo
+  como 25, alcanzaría y sobraría.
+
+Cada elemento tendrá la posibilidad de ser editado, borrado, y visto.
+
+2.2. Vista para crear una cuenta de cliente (get, post).
+
+Es una vista que tiene sencillamente un formulario con un selector de las areas de servicio disponibles para
+  crear una cuenta cliente. Adicionalmente debería mostrarse un resumen de los datos de la entidad para la que
+  se está agregando una nueva cuenta cliente.
+
+Al guardarse se debería volver a la vista de la lista de cuentas de cliente (que sería en realidad la vista de
+  visualización de una entidad).
+
+2.3. Vista para borrar una cuenta de cliente (get, delete).
+
+Es una pantalla con una pregunta de si quiere borrar o no cierta cuenta. No podra borrarla si tiene operaciones
+  realizadas, como realizar pedidos.
+
+2.4. Vista para ver una cuenta. En la misma se verán los datos básicos de la entidad y el área, como así un mini
+  dashboard (sobre en el que en realidad mucha influencia no tendríamos).
+
+2.5. Vista para editar entidades (get, post).
+
+Es un formulario normal para actualizar una cuenta. Validará o no. Al terminar, volvemos al mismo formulario.
+Debería tener algún tipo de enlace para regresar al listado principal (vista de la entidad).
+
+1.X.1 Deberiamos conservar en cookies o en variables o algo, todos los parametros que se estan utilizando en la
+  busqueda y la paginación.

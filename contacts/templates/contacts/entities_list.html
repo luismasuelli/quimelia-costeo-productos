@@ -1,0 +1,66 @@
+{% extends 'main/base.html' %}
+{% load bootstrap3 %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <section id="search">
+                <form action="" method="get" class="form-inline">
+                    {% bootstrap_form form %}
+                    {% bootstrap_button '' 'submit' 'search' 'btn btn-primary' %}
+                </form>
+            </section>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <section id="list">
+                <table class="table table-bordered table-stripped">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Tipo Id.</th>
+                        <th>Identificaci&oacute;n</th>
+                        <th>Nombre</th>
+                        <th>Ciudad</th>
+                        <th>Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for entity in object_list %}
+                        <tr>
+                            <td>{{ entity.pk }}</td>
+                            <td>{{ entity.get_identification_type_display }}</td>
+                            <td>{{ entity.identification }}</td>
+                            <td>{{ entity.name }}</td>
+                            <td>{{ entity.city.name }}</td>
+                            <td>
+                                <a href="{% url 'contacts:entities-detail' pk=entity.pk %}">Ver</a>
+                                <a href="{% url 'contacts:entities-delete' pk=entity.pk %}">Eliminar</a>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td align="center" colspan="6">No hay ninguna entidad cargada</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {% if is_paginated and page_obj.has_other_pages %}
+                    <div class="pagination">
+                        <span class="page-links">
+                            {% if page_obj.has_previous %}
+                                <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+                            {% endif %}
+                            <span class="page-current">
+                                P&aacute;gina {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
+                            </span>
+                            {% if page_obj.has_next %}
+                                <a href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+                            {% endif %}
+                        </span>
+                    </div>
+                {% endif %}
+            </section>
+        </div>
+    </div>
+{% endblock %}
