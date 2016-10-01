@@ -28,7 +28,6 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Tipo Id.</th>
                             <th>Identificaci&oacute;n</th>
                             <th>Nombre</th>
                             <th>Ciudad</th>
@@ -41,7 +40,6 @@
                     {% for entity in object_list %}
                         <tr>
                             <td>{{ entity.pk }}</td>
-                            <td>{{ entity.get_identification_type_display }}</td>
                             <td>{{ entity.identification }}{% if not entity.in_homeland %} ({{ entity.identification_country.code }}){% endif %}</td>
                             <td>{{ entity.name }}</td>
                             <td>{{ entity.city.name }}</td>

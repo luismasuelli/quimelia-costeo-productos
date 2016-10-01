@@ -42,16 +42,8 @@ class Entity(TrackedLive):
     Entity (With a ruc, ID, or passport).
     """
 
-    ID_TYPE_NATIONAL = 1
-    ID_TYPE_FOREIGN = 2
-    ID_TYPES = (
-        (ID_TYPE_NATIONAL, _('Citizen ID')),
-        (ID_TYPE_FOREIGN, _('Passport'))
-    )
     identification = models.CharField(max_length=13, verbose_name=_('Identification'),
                                       validators=[RegexValidator(r'^\d*$')])
-    identification_type = models.PositiveSmallIntegerField(null=False, choices=ID_TYPES, default=ID_TYPE_NATIONAL,
-                                                           verbose_name=_('Identification Type'))
     identification_country = CatalogFK(EntityCountry, null=False, default=default_country,
                                        verbose_name=_('Identification Country'))
     name = models.CharField(max_length=70, validators=[NameRegexValidator(
@@ -70,10 +62,7 @@ class Entity(TrackedLive):
         except EntityCountry.DoesNotExist:
             return
 
-        if self.identification_type == self.ID_TYPE_NATIONAL:
-            if not in_homeland:
-                raise ValidationError(_(u'A foreign country must not be chosen for a local identification'))
-
+        if in_homeland:
             if not re.match('^\d{10}(\d{3})?$', self.identification):
                 raise ValidationError(_(u'Ecuadorean identifier ID must be 10 or 13 digits long'))
 
@@ -96,9 +85,7 @@ class Entity(TrackedLive):
 
             if verifier != modulo:
                 raise ValidationError(_(u'Invalid ecuadorean identifier'), 'invalid-content')
-        elif self.identification_type == self.ID_TYPE_FOREIGN:
-            if not in_homeland:
-                raise ValidationError(_(u'A foreign country must be chosen for a passport identification'))
+        else:
             if not re.match(r'^[a-zA-Z0-9]{8,}$', self.identification):
                 raise ValidationError(_(u'Invalid passport'), 'invalid-content')
 

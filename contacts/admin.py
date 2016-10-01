@@ -4,7 +4,7 @@ from .models import ServiceArea, ClientAccount, Entity
 
 
 class EntityAdmin(ModelAdmin):
-    list_display = ('id', 'identification', 'identification_type', 'name', 'address', 'city')
+    list_display = ('id', 'identification', 'identification_country', 'name', 'address', 'city', 'provider')
 
 
 class ServiceAreaAdmin(CatalogAdmin):
