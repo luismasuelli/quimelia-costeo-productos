@@ -59,7 +59,7 @@ class Entity(TrackedLive):
     )], verbose_name=_('Name'))
     address = models.CharField(max_length=128, verbose_name=_('Address'))
     city = CatalogFK(City, verbose_name=_('City'))
-    provider = models.BooleanField(default=False)
+    provider = models.BooleanField(default=False, verbose_name=_('Is Provider'))
 
     def in_homeland(self):
         return self.identification_country.is_homeland()

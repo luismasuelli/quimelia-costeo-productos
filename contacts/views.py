@@ -3,6 +3,7 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView, D
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from support.search.views import SearchListView
 from .models import Entity, ClientAccount
+from .forms import EntityForm
 
 
 class EntitiesList(PermissionRequiredMixin, SearchListView):
@@ -14,11 +15,13 @@ class EntitiesList(PermissionRequiredMixin, SearchListView):
 
 class EntityCreate(PermissionRequiredMixin, CreateView):
     permission_required = 'contacts.add_entity'
+    form_class = EntityForm
     model = Entity
 
 
 class EntityUpdate(PermissionRequiredMixin, UpdateView):
     permission_required = 'contacts.change_entity'
+    fields = ('identification', 'identification_type', 'identification_country', 'name', 'address', 'city')
     model = Entity
 
 

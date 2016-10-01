@@ -3,6 +3,7 @@
 from __future__ import unicode_literals
 
 from django.db import migrations, models
+from django.utils.translation import ugettext_lazy as _
 import django.db.models.deletion
 
 
@@ -16,7 +17,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='entity',
             name='provider',
-            field=models.BooleanField(default=False),
+            field=models.BooleanField(default=False, verbose_name=_('Is Provider')),
         ),
         migrations.AlterField(
             model_name='clientaccount',
