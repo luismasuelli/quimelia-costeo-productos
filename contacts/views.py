@@ -1,6 +1,9 @@
+from django.core.urlresolvers import reverse_lazy
 from django.db.models import Count
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
+from django.utils.translation import ugettext_lazy as _
 from support.search.views import SearchListView
 from .models import Entity, ClientAccount
 from .forms import EntityForm
@@ -13,10 +16,17 @@ class EntitiesList(PermissionRequiredMixin, SearchListView):
     model = Entity
 
 
-class EntityCreate(PermissionRequiredMixin, CreateView):
+class EntityCreate(PermissionRequiredMixin, SuccessMessageMixin, CreateView):
     permission_required = 'contacts.add_entity'
     form_class = EntityForm
     model = Entity
+    success_url = reverse_lazy('contacts:entities-list')
+
+    def get_success_message(self, cleaned_data):
+        #  cleaned_data is the cleaned data from the form which is used for string formatting
+        return _('Account "%(name)s" (%(identification)s) successfully created') % {
+            'name': self.object.name, 'identification': self.object.identification
+        }
 
 
 class EntityUpdate(PermissionRequiredMixin, UpdateView):
