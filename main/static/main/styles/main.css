@@ -20,3 +20,8 @@ section.lonely {
 .form-inline label:not(:first-child) {
     margin-left: 5px;
 }
+
+label + .form-group .checkbox {
+    margin-top: 0;
+    margin-bottom: 0;
+}

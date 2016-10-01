@@ -18,7 +18,10 @@
                             <div class="col-md-6">{% bootstrap_field form.identification_country %}</div>
                             <div class="col-md-6">{% bootstrap_field form.address %}</div>
                             <div class="col-md-6">{% bootstrap_field form.city %}</div>
-                            <div class="col-md-6">{% bootstrap_field form.provider %}</div>
+                            <div class="col-md-6">
+                                {% bootstrap_label form.provider.label %}
+                                {% bootstrap_field form.provider show_label=False %}
+                            </div>
                         </div>
                     </div>
                     <div class="form-group text-center">
