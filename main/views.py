@@ -26,4 +26,4 @@ class TemplateViewWithContext(LoginRequiredMixin, TemplateView):
         return context_data
 
     def get(self, request, *args, **kwargs):
-        return self.render_to_response(RequestContext(request, self.get_context_data(**kwargs)))
+        return self.render_to_response(self.get_context_data(**kwargs))
