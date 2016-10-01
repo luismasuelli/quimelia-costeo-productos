@@ -22,11 +22,11 @@ class EntityCountry(CatalogModel):
 
     special = models.CharField(max_length=10, choices=SPECIAL_TYPES, null=True, blank=True)
 
-    def is_national(self):
+    def is_homeland(self):
         return self.special == self.SPECIAL_TYPE_HOMELAND
 
     def clean(self):
-        if self.is_national():
+        if self.is_homeland():
             if type(self).objects.exclude(pk=self.pk).filter(special=self.SPECIAL_TYPE_HOMELAND).exists():
                 raise ValidationError(_(u'Only one country can be selected as homeland'))
             if not self.enabled:
@@ -58,14 +58,17 @@ class Entity(TrackedLive):
     address = models.CharField(max_length=128, verbose_name=_('Address'))
     city = CatalogFK(City, verbose_name=_('City'))
 
+    def in_homeland(self):
+        return self.identification_country.is_homeland()
+
     def clean(self):
         try:
-            country = self.identification_country
+            in_homeland = self.in_homeland()
         except EntityCountry.DoesNotExist:
             return
 
         if self.identification_type == self.ID_TYPE_NATIONAL:
-            if not country.is_national():
+            if not in_homeland:
                 raise ValidationError(_(u'A foreign country must not be chosen for a local identification'))
 
             if not re.match('^\d{10}(\d{3})?$', self.identification):
@@ -91,7 +94,7 @@ class Entity(TrackedLive):
             if verifier != modulo:
                 raise ValidationError(_(u'Invalid ecuadorean identifier'), 'invalid-content')
         elif self.identification_type == self.ID_TYPE_FOREIGN:
-            if not country.is_national():
+            if not in_homeland:
                 raise ValidationError(_(u'A foreign country must be chosen for a passport identification'))
             if not re.match(r'^[a-zA-Z0-9]{8,}$', self.identification):
                 raise ValidationError(_(u'Invalid passport'), 'invalid-content')
