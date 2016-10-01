@@ -3,12 +3,20 @@
 {% block content %}
     <div class="row">
         <div class="col-md-12">
-            <section id="search">
+            <h1>Clientes y Proveedores</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <section id="search" class="pull-left">
                 <form action="" method="get" class="form-inline">
                     {% bootstrap_form form %}
                     {% bootstrap_button '' 'submit' 'search' 'btn btn-primary' %}
                 </form>
             </section>
+            <div class="pull-right">
+                <a href="{% url 'contacts:entities-create' %}" class="btn btn-default">Agregar Cliente</a>
+            </div>
         </div>
     </div>
     <div class="row">
@@ -16,14 +24,14 @@
             <section id="list">
                 <table class="table table-bordered table-stripped">
                     <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Tipo Id.</th>
-                        <th>Identificaci&oacute;n</th>
-                        <th>Nombre</th>
-                        <th>Ciudad</th>
-                        <th>Acciones</th>
-                    </tr>
+                        <tr>
+                            <th>#</th>
+                            <th>Tipo Id.</th>
+                            <th>Identificaci&oacute;n</th>
+                            <th>Nombre</th>
+                            <th>Ciudad</th>
+                            <th>Acciones</th>
+                        </tr>
                     </thead>
                     <tbody>
                     {% for entity in object_list %}
@@ -34,8 +42,12 @@
                             <td>{{ entity.name }}</td>
                             <td>{{ entity.city.name }}</td>
                             <td>
+                                {% if perms.contacts.can_view_entity %}
                                 <a href="{% url 'contacts:entities-detail' pk=entity.pk %}">Ver</a>
+                                {% endif %}
+                                {% if perms.contacts.can_delete_entity %}
                                 <a href="{% url 'contacts:entities-delete' pk=entity.pk %}">Eliminar</a>
+                                {% endif %}
                             </td>
                         </tr>
                     {% empty %}
@@ -46,19 +58,17 @@
                     </tbody>
                 </table>
                 {% if is_paginated and page_obj.has_other_pages %}
-                    <div class="pagination">
-                        <span class="page-links">
-                            {% if page_obj.has_previous %}
-                                <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
-                            {% endif %}
-                            <span class="page-current">
-                                P&aacute;gina {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
-                            </span>
-                            {% if page_obj.has_next %}
-                                <a href="?page={{ page_obj.next_page_number }}">Siguiente</a>
-                            {% endif %}
+                    <span class="page-links">
+                        {% if page_obj.has_previous %}
+                            <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+                        {% endif %}
+                        <span class="page-current">
+                            P&aacute;gina {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
                         </span>
-                    </div>
+                        {% if page_obj.has_next %}
+                            <a href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+                        {% endif %}
+                    </span>
                 {% endif %}
             </section>
         </div>
