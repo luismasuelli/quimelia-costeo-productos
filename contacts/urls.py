@@ -15,9 +15,9 @@ urlpatterns = [
     url(r'^entities/(?P<pk>\d+)/delete$', views.EntityDelete.as_view(template_name='contacts/entities_delete.html'),
         name='entities-delete'),
     # TODO poner estas bien!!!
-    url(r'^client-accounts$', views.EntitiesList, name='entities-list'),
-    url(r'^client-accounts/create$', views.EntityCreate, name='entities-create'),
-    url(r'^client-accounts/(?P<pk>\d+)$', views.EntityDetail, name='entities-detail'),
-    url(r'^client-accounts/(?P<pk>\d+)/update$', views.EntityUpdate, name='entities-update'),
-    url(r'^client-accounts/(?P<pk>\d+)/delete$', views.EntityDelete, name='entities-delete'),
+    url(r'^client-accounts$', views.EntitiesList, name='client-accounts-list'),
+    url(r'^client-accounts/create$', views.EntityCreate, name='client-accounts-create'),
+    url(r'^client-accounts/(?P<pk>\d+)$', views.EntityDetail, name='client-accounts-detail'),
+    url(r'^client-accounts/(?P<pk>\d+)/update$', views.EntityUpdate, name='client-accounts-update'),
+    url(r'^client-accounts/(?P<pk>\d+)/delete$', views.EntityDelete, name='client-accounts-delete'),
 ]
