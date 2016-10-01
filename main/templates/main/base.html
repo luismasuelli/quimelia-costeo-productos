@@ -12,7 +12,7 @@
         {% block js_header %}{% endblock %}
     </head>
     <body>
-        {% include 'main/menu.html' with user=user site_title=SITE_TITLE only %}
+        {% include 'main/menu.html' with user=user perms=perms site_title=SITE_TITLE only %}
         <div class="container">
             {% bootstrap_messages %}
             <section id="main">
