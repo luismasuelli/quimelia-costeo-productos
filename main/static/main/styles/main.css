@@ -13,3 +13,10 @@ section.lonely {
 .full-width {
     width: 100%;
 }
+
+.form-inline label {
+    margin-right: 5px;
+}
+.form-inline label:not(:first-child) {
+    margin-left: 5px;
+}
