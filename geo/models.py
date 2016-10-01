@@ -10,7 +10,7 @@ class Province(CatalogModel):
     """
 
     def to_string(self):
-        return text_type("%s, %s") % (super(Province, self).to_string(), self.country)
+        return text_type("%s") % (super(Province, self).to_string())
 
     class Meta(CatalogModel.Meta):
         abstract = False
