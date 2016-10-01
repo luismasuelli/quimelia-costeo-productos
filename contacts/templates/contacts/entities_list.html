@@ -30,6 +30,8 @@
                             <th>Identificaci&oacute;n</th>
                             <th>Nombre</th>
                             <th>Ciudad</th>
+                            <th>Proveedor</th>
+                            <th>Cuentas de Cliente</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -41,6 +43,8 @@
                             <td>{{ entity.identification }}{% if not entity.in_homeland %} ({{ entity.identification_country.code }}){% endif %}</td>
                             <td>{{ entity.name }}</td>
                             <td>{{ entity.city.name }}</td>
+                            <td>{% if entity.provider %}Sí{% else %}No{% endif %}</td>
+                            <td>{{ entity.client_accounts_count }}</td>
                             <td>
                                 {% if perms.contacts.can_view_entity %}
                                 <a href="{% url 'contacts:entities-detail' pk=entity.pk %}">Ver</a>

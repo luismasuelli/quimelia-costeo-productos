@@ -1,3 +1,4 @@
+from django.db.models import Count
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from support.search.views import SearchListView
@@ -6,6 +7,7 @@ from .models import Entity, ClientAccount
 
 class EntitiesList(PermissionRequiredMixin, SearchListView):
     permission_required = 'contacts.list_entity'
+    queryset = Entity.objects.annotate(client_accounts_count=Count('client_accounts'))
     search_fields = ('identification', 'name', 'address', 'city__name')
     model = Entity
 

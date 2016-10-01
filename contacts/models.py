@@ -57,6 +57,7 @@ class Entity(TrackedLive):
     )], verbose_name=_('Name'))
     address = models.CharField(max_length=128, verbose_name=_('Address'))
     city = CatalogFK(City, verbose_name=_('City'))
+    provider = models.BooleanField(default=False)
 
     def in_homeland(self):
         return self.identification_country.is_homeland()
@@ -125,7 +126,8 @@ class ClientAccount(TrackedLive):
     """
 
     service_area = CatalogFK(ServiceArea, on_delete=models.PROTECT, verbose_name=_('Service Area'))
-    entity = models.ForeignKey(Entity, on_delete=models.CASCADE, verbose_name=_('Entity'))
+    entity = models.ForeignKey(Entity, on_delete=models.CASCADE, verbose_name=_('Entity'),
+                               related_name='client_accounts')
 
     class Meta:
         unique_together = (('service_area', 'entity'),)
