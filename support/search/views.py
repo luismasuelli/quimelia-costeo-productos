@@ -1,6 +1,6 @@
 from django.core.exceptions import ImproperlyConfigured
 from django.db.models import Q
-from django.views.generic import View
+from django.views.generic import View, ListView
 from django.views.generic.list import MultipleObjectMixin
 from django.http import JsonResponse
 from django.utils.six import text_type
@@ -186,6 +186,76 @@ class SearchView(MultipleObjectMixin, View):
 
         return JsonResponse([self.build_json(obj, label_field, label_member, value_field, value_member)
                              for obj in queryset])
+
+
+class SearchListView(ListView):
+
+    lookup_type = 'icontains'
+    search_fields = None
+    search_param = 'term'
+
+    def get_lookup_type(self):
+        """
+        Returns the lookup type. The returned value should be a valid lookup registered in your
+          django project, like "istartswith", "iexact", or "icontains". Please note that starting
+          from Django 1.10 the "search" lookup will not be available anymore.
+
+        If you don't need custom per-request behavior, just set the "lookup_type" variable.
+        :return:
+        """
+
+        return self.lookup_type
+
+    def get_search_fields(self):
+        """
+        Returns the fields used for the search. At least one field must be specified. in the search.
+        Either this method must be overridden or the `search_fields` member must be set.
+        :return:
+        """
+
+        search_fields = self.search_fields
+        if not search_fields:
+            raise ImproperlyConfigured(
+                "%(cls)s is missing a list of search fields. Define "
+                "%(cls)s.search_fields, or override %(cls)s.get_queryset()." % {
+                    'cls': self.__class__.__name__
+                }
+            )
+        return search_fields
+
+    def get_search_param(self):
+        """
+        Returns the http querystring field used for the search. By default this querystring field is 'term'.
+        Either this method must be overridden or the `search_fields` member must be changed, but anyway an
+          empty value (e.g. None, False) is forbidden.
+        :return:
+        """
+
+        return self.search_param
+
+    def get_unsearched_queryset(self):
+        """
+        Gets a not-yet-filtered queryset, based on the former impl. of get_queryset().
+        :return: The base queryset.
+        """
+
+        return super(SearchListView, self).get_queryset()
+
+    def get_queryset(self):
+        """
+        Gets a filtered-for-search queryset.
+        :return:
+        """
+
+        queryset = self.get_unsearched_queryset()
+        lookup_type = self.get_lookup_type()
+        lookup_fields = ["%s__%s" % (field, lookup_type) for field in self.get_search_fields()]
+        term = self.request.GET.get(self.search_param, '')
+
+        for part in term.split():
+            queryset = queryset.filter(reduce(operator.or_, [Q(**{lookup: part}) for lookup in lookup_fields]))
+
+        return queryset
 
 
 def search_view(klass=SearchView, **kwargs):
