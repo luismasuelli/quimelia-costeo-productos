@@ -10,6 +10,33 @@ from catalog.fields import CatalogFK
 from geo.models import City
 
 
+class EntityCountry(CatalogModel):
+    """
+    Entity Country (to match a passport against)
+    """
+
+    SPECIAL_TYPE_HOMELAND = 'homeland'
+    SPECIAL_TYPES = (
+        (SPECIAL_TYPE_HOMELAND, _(u'Homeland')),
+    )
+
+    special = models.CharField(max_length=10, choices=SPECIAL_TYPES, null=True, blank=True)
+
+    def is_national(self):
+        return self.special == self.SPECIAL_TYPE_HOMELAND
+
+    def clean(self):
+        if self.is_national():
+            if type(self).objects.exclude(pk=self.pk).filter(special=self.SPECIAL_TYPE_HOMELAND).exists():
+                raise ValidationError(_(u'Only one country can be selected as homeland'))
+            if not self.enabled:
+                raise ValidationError(_(u'Homeland country cannot be disabled'))
+
+
+def default_country():
+    return EntityCountry.objects.get(special=EntityCountry.SPECIAL_TYPE_HOMELAND).code
+
+
 class Entity(TrackedLive):
     """
     Entity (With a ruc, ID, or passport).
@@ -21,9 +48,10 @@ class Entity(TrackedLive):
         (ID_TYPE_NATIONAL, _('Citizen ID')),
         (ID_TYPE_FOREIGN, _('Passport'))
     )
-    identification = models.CharField(max_length=13, unique=True, verbose_name=_('Identification'),
+    identification = models.CharField(max_length=13, verbose_name=_('Identification'),
                                       validators=[RegexValidator(r'^\d*$')])
     identification_type = models.PositiveSmallIntegerField(null=False, choices=ID_TYPES)
+    identification_country = CatalogFK(EntityCountry, null=False, default=default_country)
     name = models.CharField(max_length=70, validators=[NameRegexValidator(
         mode=NameRegexValidator.MODE_ALPHANUMERIC_EXTENDED
     )], verbose_name=_('Name'))
@@ -31,7 +59,15 @@ class Entity(TrackedLive):
     city = CatalogFK(City, verbose_name=_('City'))
 
     def clean(self):
+        try:
+            country = self.identification_country
+        except EntityCountry.DoesNotExist:
+            return
+
         if self.identification_type == self.ID_TYPE_NATIONAL:
+            if not country.is_national():
+                raise ValidationError(_(u'A foreign country must not be chosen for a local identification'))
+
             if not re.match('^\d{10}(\d{3})?$', self.identification):
                 raise ValidationError(_(u'Ecuadorean identifier ID must be 10 or 13 digits long'))
 
@@ -55,10 +91,13 @@ class Entity(TrackedLive):
             if verifier != modulo:
                 raise ValidationError(_(u'Invalid ecuadorean identifier'), 'invalid-content')
         elif self.identification_type == self.ID_TYPE_FOREIGN:
+            if not country.is_national():
+                raise ValidationError(_(u'A foreign country must be chosen for a passport identification'))
             if not re.match(r'^[a-zA-Z0-9]{8,}$', self.identification):
-                raise ValidationError(_(u'Invalid password'), 'invalid-content')
+                raise ValidationError(_(u'Invalid passport'), 'invalid-content')
 
     class Meta:
+        unique_together = (('identification_country', 'identification'),)
         verbose_name = _('Entity')
         verbose_name_plural = _('Entities')
         permissions = (
