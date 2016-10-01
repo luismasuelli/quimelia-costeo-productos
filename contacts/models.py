@@ -32,6 +32,10 @@ class EntityCountry(CatalogModel):
             if not self.enabled:
                 raise ValidationError(_(u'Homeland country cannot be disabled'))
 
+    def to_string(self):
+        original = super(EntityCountry, self).to_string()
+        return original if not self.special else "%s (%s)" % (original, self.get_special_display())
+
 
 def default_country():
     return EntityCountry.objects.get(special=EntityCountry.SPECIAL_TYPE_HOMELAND).code
