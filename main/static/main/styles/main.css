@@ -9,3 +9,7 @@ section#main {
 section.lonely {
     margin-top: 80px;
 }
+
+.full-width {
+    width: 100%;
+}
