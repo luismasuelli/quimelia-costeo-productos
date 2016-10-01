@@ -50,8 +50,10 @@ class Entity(TrackedLive):
     )
     identification = models.CharField(max_length=13, verbose_name=_('Identification'),
                                       validators=[RegexValidator(r'^\d*$')])
-    identification_type = models.PositiveSmallIntegerField(null=False, choices=ID_TYPES)
-    identification_country = CatalogFK(EntityCountry, null=False, default=default_country)
+    identification_type = models.PositiveSmallIntegerField(null=False, choices=ID_TYPES, default=ID_TYPE_NATIONAL,
+                                                           verbose_name=_('Identification Type'))
+    identification_country = CatalogFK(EntityCountry, null=False, default=default_country,
+                                       verbose_name=_('Identification Country'))
     name = models.CharField(max_length=70, validators=[NameRegexValidator(
         mode=NameRegexValidator.MODE_ALPHANUMERIC_EXTENDED
     )], verbose_name=_('Name'))
