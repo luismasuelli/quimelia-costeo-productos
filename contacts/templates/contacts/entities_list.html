@@ -43,7 +43,7 @@
                             <td>{{ entity.identification }}{% if not entity.in_homeland %} ({{ entity.identification_country.code }}){% endif %}</td>
                             <td>{{ entity.name }}</td>
                             <td>{{ entity.city.name }}</td>
-                            <td>{% if entity.provider %}Sí{% else %}No{% endif %}</td>
+                            <td>{% if entity.provider %}S&iacute;{% else %}No{% endif %}</td>
                             <td>{{ entity.client_accounts_count }}</td>
                             <td>
                                 {% if perms.contacts.can_view_entity %}

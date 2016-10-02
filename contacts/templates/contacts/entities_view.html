@@ -1,4 +1,36 @@
 {% extends 'main/base.html' %}
 {% load bootstrap3 %}
 {% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Datos de la Cuenta</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-6 text-bold">Nombre</div>
+                <div class="col-md-6">{{ object.name }}</div>
+                <div class="col-md-6 text-bold">Identificaci&oacute;n</div>
+                <div class="col-md-6">{{ object.identification }}</div>
+                <div class="col-md-6 text-bold">Pa&iacute;s de la Identificación</div>
+                <div class="col-md-6">{{ object.identification_country }}</div>
+                <div class="col-md-6 text-bold">Direcci&oacute;n</div>
+                <div class="col-md-6">{{ object.address }}</div>
+                <div class="col-md-6 text-bold">Ciudad</div>
+                <div class="col-md-6">{{ object.city }}</div>
+                <div class="col-md-6 text-bold">Es Proveedor</div>
+                <div class="col-md-6">{% if object.name %}S&iacute;{% else %}No{% endif %}</div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="pull-right">
+                {% if perms.contacts.can_change_entity %}
+                    <div class="pull-right">
+                        <a href="{% url 'contacts:entities-update' pk=object.pk %}" class="btn btn-default">Modificar Cuenta</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
 {% endblock %}

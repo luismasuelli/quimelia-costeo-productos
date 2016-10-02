@@ -31,7 +31,7 @@ class EntityCreate(PermissionRequiredMixin, SuccessMessageMixin, CreateView):
 
 class EntityUpdate(PermissionRequiredMixin, UpdateView):
     permission_required = 'contacts.change_entity'
-    fields = ('identification', 'identification_type', 'identification_country', 'name', 'address', 'city')
+    form_class = EntityForm
     model = Entity
 
 
