@@ -25,3 +25,7 @@ label + .form-group .checkbox {
     margin-top: 0;
     margin-bottom: 0;
 }
+
+.text-strong, .text-bold {
+    font-weight: bold;
+}
