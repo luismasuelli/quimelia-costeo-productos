@@ -49,7 +49,7 @@ class Entity(TrackedLive):
     identification = models.CharField(max_length=13, verbose_name=_('Identification'),
                                       validators=[RegexValidator(r'^\d*$')])
     identification_country = CatalogFK(EntityCountry, null=False, default=default_country,
-                                       verbose_name=_('Identification Country'))
+                                       verbose_name=_('Identification Country'), on_delete=models.PROTECT)
     name = models.CharField(max_length=70, validators=[NameRegexValidator(
         mode=NameRegexValidator.MODE_ALPHANUMERIC_EXTENDED
     )], verbose_name=_('Name'))
