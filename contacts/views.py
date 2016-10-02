@@ -29,10 +29,19 @@ class EntityCreate(PermissionRequiredMixin, SuccessMessageMixin, CreateView):
         }
 
 
-class EntityUpdate(PermissionRequiredMixin, UpdateView):
+class EntityUpdate(PermissionRequiredMixin, SuccessMessageMixin, UpdateView):
     permission_required = 'contacts.change_entity'
     form_class = EntityForm
     model = Entity
+
+    def get_success_message(self, cleaned_data):
+        #  cleaned_data is the cleaned data from the form which is used for string formatting
+        return _('Account "%(name)s" (%(identification)s) successfully updated') % {
+            'name': self.object.name, 'identification': self.object.identification
+        }
+
+    def get_success_url(self):
+        return reverse_lazy('contacts:entities-update', kwargs={'pk': self.object.pk})
 
 
 class EntityDelete(PermissionRequiredMixin, DeleteView):

@@ -4,6 +4,7 @@
     <div class="row">
         <div class="col-md-12">
             <h1>Modificar Cuenta</h1>
+            {% if perms.contacts.can_view_entity %}<a href="{% url 'contacts:entities-detail' pk=object.pk %}">Volver a la vista</a>{% endif %}
         </div>
     </div>
     <div class="row">
@@ -25,7 +26,7 @@
                         </div>
                     </div>
                     <div class="form-group text-center">
-                        {% bootstrap_button 'Crear' 'submit' 'save' 'btn btn-lg btn-primary btn-block main-action' %}
+                        {% bootstrap_button 'Actualizar' 'submit' 'save' 'btn btn-lg btn-primary btn-block main-action' %}
                     </div>
                 </form>
             </section>
