@@ -3,7 +3,7 @@
 {% block content %}
     <div class="row">
         <div class="col-md-12">
-            <h1>Modificar Cuenta</h1>
+            <h1>Modificar Entidad</h1>
             {% if perms.contacts.can_view_entity %}<a href="{% url 'contacts:entities-detail' pk=object.pk %}">Volver a la vista</a>{% endif %}
         </div>
     </div>

@@ -1,5 +1,6 @@
+from django.contrib import messages
 from django.core.urlresolvers import reverse_lazy
-from django.db.models import Count
+from django.db.models import Count, ProtectedError
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
@@ -23,8 +24,7 @@ class EntityCreate(PermissionRequiredMixin, SuccessMessageMixin, CreateView):
     success_url = reverse_lazy('contacts:entities-list')
 
     def get_success_message(self, cleaned_data):
-        #  cleaned_data is the cleaned data from the form which is used for string formatting
-        return _('Account "%(name)s" (%(identification)s) successfully created') % {
+        return _('Entity "%(name)s" (%(identification)s) successfully created') % {
             'name': self.object.name, 'identification': self.object.identification
         }
 
@@ -35,8 +35,7 @@ class EntityUpdate(PermissionRequiredMixin, SuccessMessageMixin, UpdateView):
     model = Entity
 
     def get_success_message(self, cleaned_data):
-        #  cleaned_data is the cleaned data from the form which is used for string formatting
-        return _('Account "%(name)s" (%(identification)s) successfully updated') % {
+        return _('Entity "%(name)s" (%(identification)s) successfully updated') % {
             'name': self.object.name, 'identification': self.object.identification
         }
 
@@ -47,6 +46,22 @@ class EntityUpdate(PermissionRequiredMixin, SuccessMessageMixin, UpdateView):
 class EntityDelete(PermissionRequiredMixin, DeleteView):
     permission_required = 'contacts.delete_entity'
     model = Entity
+    success_url = reverse_lazy('contacts:entities-list')
+
+    def post(self, request, *args, **kwargs):
+        try:
+            result = self.delete(request, *args, **kwargs)
+            message = _('Entity "%(name)s" (%(identification)s) successfully deleted') % {
+                'name': self.object.name, 'identification': self.object.identification
+            }
+            messages.success(self.request, message)
+            return result
+        except ProtectedError:
+            message = _('Cannot delete entity "%(name)s" (%(identification)s) since it is in use') % {
+                'name': self.object.name, 'identification': self.object.identification
+            }
+            messages.error(self.request, message)
+            return self.get(request, *args, **kwargs)
 
 
 class EntityDetail(PermissionRequiredMixin, DetailView):

@@ -3,7 +3,7 @@
 {% block content %}
     <div class="row">
         <div class="col-md-12">
-            <h1>Datos de la Cuenta</h1>
+            <h1>Datos de la Entidad</h1>
             {% if perms.contacts.can_list_entity %}<a href="{% url 'contacts:entities-list' %}">Volver a la lista</a>{% endif %}
         </div>
     </div>
@@ -25,12 +25,9 @@
             </div>
         </div>
         <div class="col-md-6">
-            <div class="pull-right">
-                {% if perms.contacts.can_change_entity %}
-                    <div class="pull-right">
-                        <a href="{% url 'contacts:entities-update' pk=object.pk %}" class="btn btn-default">Modificar Cuenta</a>
-                    </div>
-                {% endif %}
+            <div class="btn-group pull-right">
+                {% if perms.contacts.can_change_entity %}<a href="{% url 'contacts:entities-update' pk=object.pk %}" class="btn btn-default">Modificar Entidad</a>{% endif %}
+                {% if perms.contacts.can_delete_entity %}<a href="{% url 'contacts:entities-delete' pk=object.pk %}" class="btn btn-default">Eliminar Entidad</a>{% endif %}
             </div>
         </div>
     </div>
