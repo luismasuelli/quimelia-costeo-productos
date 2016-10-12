@@ -14,11 +14,11 @@
                     {% bootstrap_button '' 'submit' 'search' 'btn btn-primary' %}
                 </form>
             </section>
-            {% if perms.contacts.can_add_entity %}
-            <div class="pull-right">
-                <a href="{% url 'contacts:entities-create' %}" class="btn btn-default">Agregar Entidad</a>
-            </div>
-            {% endif %}
+            <section id="actions" class="pull-right">
+                {% if perms.contacts.can_add_entity %}
+                    <a href="{% url 'contacts:entities-create' %}" class="btn btn-default">Agregar Entidad</a>
+                {% endif %}
+            </section>
         </div>
     </div>
     <div class="row">
