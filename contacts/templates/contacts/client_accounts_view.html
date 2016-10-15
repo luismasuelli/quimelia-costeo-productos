@@ -1,4 +1,28 @@
 {% extends 'main/base.html' %}
 {% load bootstrap3 %}
 {% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Datos de la Cuenta de Cliente</h1>
+            {% if perms.contacts.can_view_entity %}<a href="{% url 'contacts:entities-detail' pk=parent.pk %}">Volver a la entidad</a>{% endif %}
+        </div>
+    </div>
+    <div class="row with-margin-top">
+        <div class="col-md-6">
+            <section id="details">
+                <div class="row">
+                    <div class="col-md-6 text-bold">&Aacute;rea de Servicio</div>
+                    <div class="col-md-6">{{ object.service_area.name }}</div>
+                </div>
+            </section>
+        </div>
+        <div class="col-md-6">
+            <section id="actions">
+                <div class="btn-group pull-right">
+                    {% if perms.contacts.can_change_clientaccount %}<a href="{% url 'contacts:client-accounts-update' pk=parent.pk ca_pk=object.pk %}" class="btn btn-default">Modificar Cuenta</a>{% endif %}
+                    {% if perms.contacts.can_delete_clientaccount %}<a href="{% url 'contacts:client-accounts-delete' pk=parent.pk ca_pk=object.pk %}" class="btn btn-default">Eliminar Cuenta</a>{% endif %}
+                </div>
+            </section>
+        </div>
+    </div>
 {% endblock %}

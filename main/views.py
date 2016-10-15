@@ -9,15 +9,14 @@ from django.contrib.auth.views import (
     password_reset, password_reset_complete, password_reset_confirm, password_reset_done,
 )
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic.base import ContextMixin
 
 
-# This view will be used as base for static views (requires login!)
-class TemplateViewWithContext(LoginRequiredMixin, TemplateView):
-
+class BaseContextMixin(ContextMixin):
     context_data = {}
 
     def get_context_data(self, **kwargs):
-        context_data = super(TemplateViewWithContext, self).get_context_data(**kwargs)
+        context_data = super(BaseContextMixin, self).get_context_data(**kwargs)
         context_data.update({
             'SITE_TITLE': constants.SITE_TITLE
         })
@@ -25,5 +24,6 @@ class TemplateViewWithContext(LoginRequiredMixin, TemplateView):
             context_data.update(self.context_data)
         return context_data
 
-    def get(self, request, *args, **kwargs):
-        return self.render_to_response(self.get_context_data(**kwargs))
+# This view will be used as base for static views (requires login!)
+class TemplateViewWithContext(BaseContextMixin, LoginRequiredMixin, TemplateView):
+    pass

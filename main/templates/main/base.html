@@ -17,7 +17,7 @@
         {% include 'main/menu.html' with user=user perms=perms site_title=SITE_TITLE only %}
         <div class="container">
             {% bootstrap_messages %}
-            <section id="main">
+            <section id="main" class="with-margin-bottom with-margin-top">
                 {% block content %}{% endblock %}
             </section>
         </div>

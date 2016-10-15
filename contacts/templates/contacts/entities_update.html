@@ -7,7 +7,7 @@
             {% if perms.contacts.can_view_entity %}<a href="{% url 'contacts:entities-detail' pk=object.pk %}">Volver a la vista</a>{% endif %}
         </div>
     </div>
-    <div class="row">
+    <div class="row with-margin-top">
         <div class="col-md-12">
             <section id="update-form">
                 <form action="" method="post">

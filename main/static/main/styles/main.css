@@ -2,12 +2,16 @@ body {
     padding-top: 66px;
 }
 
-section#main {
-    margin-top: 16px;
-}
-
 section.lonely {
     margin-top: 80px;
+}
+
+.with-margin-top {
+    margin-top: 1em;
+}
+
+.with-margin-bottom {
+    margin-bottom: 1em;
 }
 
 .full-width {
