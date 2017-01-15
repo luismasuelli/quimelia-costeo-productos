@@ -83,6 +83,3 @@ Es una pantalla con una pregunta de si quiere borrar o no cierta cuenta. No podr
 
 Es un formulario normal para actualizar una cuenta. Validará o no. Al terminar, volvemos al mismo formulario.
 Debería tener algún tipo de enlace para regresar al listado principal (vista de la entidad).
-
-1.X.1 Deberiamos conservar en cookies o en variables o algo, todos los parametros que se estan utilizando en la
-  busqueda y la paginación.

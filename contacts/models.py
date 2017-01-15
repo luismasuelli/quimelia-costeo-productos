@@ -3,7 +3,7 @@ from django.db import models
 from django.utils.translation import ugettext as _
 from grimoire.django.tracked.models import TrackedLive
 import re
-from .validators.regex import NameRegexValidator
+from support.validators.regex import NameRegexValidator
 from django.core.validators import RegexValidator
 from catalog.models import CatalogModel
 from catalog.fields import CatalogFK

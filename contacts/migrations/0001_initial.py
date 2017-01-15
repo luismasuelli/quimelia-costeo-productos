@@ -3,7 +3,7 @@
 from __future__ import unicode_literals
 
 import catalog.fields
-import contacts.validators.regex
+import support.validators.regex
 import django.core.validators
 from django.db import migrations, models
 import django.db.models.deletion
@@ -39,7 +39,7 @@ class Migration(migrations.Migration):
                 ('updated_on', models.DateTimeField(default=django.utils.timezone.now, editable=False, help_text='Date and time of last record update', verbose_name='Update Date')),
                 ('identification', models.CharField(max_length=13, unique=True, validators=[django.core.validators.RegexValidator(b'^\\d*$')], verbose_name='Identification')),
                 ('identification_type', models.PositiveSmallIntegerField(choices=[(1, 'Citizen ID'), (2, 'Passport')])),
-                ('name', models.CharField(max_length=70, validators=[contacts.validators.regex.NameRegexValidator(mode=3)], verbose_name='Nombre')),
+                ('name', models.CharField(max_length=70, validators=[support.validators.regex.NameRegexValidator(mode=3)], verbose_name='Nombre')),
                 ('address', models.CharField(max_length=128, verbose_name='Address')),
                 ('city', catalog.fields.CatalogFK(on_delete=django.db.models.deletion.CASCADE, to='geo.City', to_field=b'code', verbose_name='Ciudad')),
             ],
