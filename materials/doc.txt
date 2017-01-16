@@ -1,0 +1,85 @@
+Modelos de esta aplicación:
+
+1. Todos ellos son modelos de tipo catálogo, que se pueden deshabilitar. Los modelos no guardan ninguna relación
+   entre sí.
+
+Vistas de esta aplicación:
+
+1. Mano de Obra.
+
+1.1. Vista para listar manos de obras.
+
+Es una lista normal de manos de obras hecha una tabla. Adicionalmente tiene un formulario de busqueda en el cual se
+  tomara un texto y se filtrara mostrando todas las manos de obra que tengan ese texto en algun lado (nombre, código,
+  notas). En caso de no popularse, se trabaja con todos los elementos.
+
+Se mostrara una cantidad corta de elementos usando el PAGINADOR de Django. En cada elemento tendremos la opcion
+  para ver la mano de obra (sus detalles), editarla (un formulario), y borrarla (una pregunta de confirmación).
+
+1.2. Vista para crear manos de obras (get, post).
+
+Es un formulario normal para crear una mano de obra. Validará o no. Al terminar nos iremos a la lista indice (punto 1.1).
+
+1.3. Vista para borrar una mano de obra (get, delete).
+
+Es una pantalla con una pregunta de si quiere borrar o no una mano de obra. No podra borrarla si se encuentra referenciada.
+
+1.4. Vista para ver una mano de obra.
+
+1.5. Vista para editar una mano de obra (get, post).
+
+Es un formulario normal para actualizar una mano de obra. Validará o no. Al terminar, volvemos al mismo formulario.
+Debería tener algún tipo de enlace para regresar al listado principal.
+
+2. Envases.
+
+2.1. Vista para listar envases.
+
+Es una lista normal de envases hecha una tabla. Adicionalmente tiene un formulario de busqueda en el cual se
+  tomara un texto y se filtrara mostrando todos los envases que tengan ese texto en algun lado (nombre, código,
+  notas). En caso de no popularse, se trabaja con todos los elementos.
+
+Se mostrara una cantidad corta de elementos usando el PAGINADOR de Django. En cada elemento tendremos la opcion
+  para ver el envase (sus detalles), editarlo (un formulario), y borrarlo (una pregunta de confirmación).
+
+2.2. Vista para crear envases (get, post).
+
+Es un formulario normal para crear un envase. Validará o no. Al terminar nos iremos a la lista indice (punto 2.1).
+
+2.3. Vista para borrar un envase (get, delete).
+
+Es una pantalla con una pregunta de si quiere borrar o no un envase. No podra borrarlo si se encuentra referenciado.
+
+2.4. Vista para ver un envase.
+
+2.5. Vista para editar un envase (get, post).
+
+Es un formulario normal para actualizar un envase. Validará o no. Al terminar, volvemos al mismo formulario.
+Debería tener algún tipo de enlace para regresar al listado principal.
+
+3. Materias Primas.
+
+3.1. Vista para listar materias primas.
+
+Es una lista normal de materias primas hecha una tabla. Adicionalmente tiene un formulario de busqueda en el cual se
+  tomara un texto y se filtrara mostrando todas las materias primas que tengan ese texto en algun lado (nombre, código,
+  notas). En caso de no popularse, se trabaja con todos los elementos.
+
+Se mostrara una cantidad corta de elementos usando el PAGINADOR de Django. En cada elemento tendremos la opcion
+  para ver la materia prima (sus detalles), editarla (un formulario), y borrarla (una pregunta de confirmación).
+
+3.2. Vista para crear materias primas (get, post).
+
+Es un formulario normal para crear una materia prima. Validará o no. Al terminar nos iremos a la lista indice (punto 3.1).
+
+3.3. Vista para borrar una materia prima (get, delete).
+
+Es una pantalla con una pregunta de si quiere borrar o no una materia prima. No podra borrarla si se encuentra referenciada.
+
+3.4. Vista para ver una materia prima.
+
+3.5. Vista para editar una materia prima (get, post).
+
+Es un formulario normal para actualizar una materia prima. Validará o no. Al terminar, volvemos al mismo formulario.
+Debería tener algún tipo de enlace para regresar al listado principal.
+
