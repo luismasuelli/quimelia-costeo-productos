@@ -1,0 +1,82 @@
+{% extends 'main/base.html' %}
+{% load bootstrap3 %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Materias Primas</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <section id="search" class="pull-left">
+                <form action="" method="get" class="form-inline">
+                    {% bootstrap_form form %}
+                    {% bootstrap_button '' 'submit' 'search' 'btn btn-primary' %}
+                </form>
+            </section>
+            <section id="actions" class="pull-right">
+                {% if perms.materials.can_add_rawmaterial %}
+                    <a href="{% url 'materials:rawmaterials-create' %}" class="btn btn-default">Agregar Materia Prima</a>
+                {% endif %}
+            </section>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <section id="list">
+                <table class="table table-bordered table-stripped">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nombre</th>
+                        <th>C&oacute;digo</th>
+                        <th>Precio por Kg</th>
+                        <th>Especial</th>
+                        <th>Notas</th>
+                        <th>Habilitado</th>
+                        <th>Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for rawmaterial in object_list %}
+                        <tr>
+                            <td>{{ rawmaterial.pk }}</td>
+                            <td>{{ rawmaterial.name }}</td>
+                            <td>{{ rawmaterial.code }}</td>
+                            <td style="text-align: right">${{ rawmaterial.kg_price }}</td>
+                            <td>{{ rawmaterial.get_special_display }}</td>
+                            <td>{{ rawmaterial.notes }}</td>
+                            <td>{% if rawmaterial.enabled %}S&iacute;{% else %}No{% endif %}</td>
+                            <td>
+                                {% if perms.materials.can_view_rawmaterials %}
+                                    <a href="{% url 'materials:rawmaterials-detail' pk=rawmaterial.pk %}">Ver</a>
+                                {% endif %}
+                                {% if perms.materials.can_delete_rawmaterials %}
+                                    <a href="{% url 'materials:rawmaterials-delete' pk=rawmaterial.pk %}">Eliminar</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td align="center" colspan="8">No hay ninguna materia prima cargada</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {% if is_paginated and page_obj.has_other_pages %}
+                    <span class="page-links">
+                        {% if page_obj.has_previous %}
+                            <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+                        {% endif %}
+                        <span class="page-current">
+                            P&aacute;gina {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
+                        </span>
+                        {% if page_obj.has_next %}
+                            <a href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+                        {% endif %}
+                    </span>
+                {% endif %}
+            </section>
+        </div>
+    </div>
+{% endblock %}

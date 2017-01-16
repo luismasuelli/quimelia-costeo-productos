@@ -27,6 +27,16 @@
                     </li>
                     -->
                 {% endif %}
+                {% if perms.materials.can_list_rawmaterial or perms.materials.can_list_workforce or perms.materials.can_list_packaging %}
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Insumos <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            {% if perms.materials.can_list_rawmaterial %}<li><a href="{% url 'materials:rawmaterials-list' %}">Materias Primas</a></li>{% endif %}
+                            {% if perms.materials.can_list_workforce %}<li><a href="{% url 'materials:workforces-list' %}">Mano de Obra</a></li>{% endif %}
+                            {% if perms.materials.can_list_packaging %}<li><a href="{% url 'materials:packagings-list' %}">Envases</a></li>{% endif %}
+                        </ul>
+                    </li>
+                {% endif %}
             </ul>
             {% endif %}
 

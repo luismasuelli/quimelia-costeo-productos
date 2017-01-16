@@ -1,0 +1,36 @@
+{% extends 'main/base.html' %}
+{% load bootstrap3 %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Datos de la Mano de Obra</h1>
+            {% if perms.materials.can_list_workforce %}<a href="{% url 'materials:workforces-list' %}">Volver a la lista</a>{% endif %}
+        </div>
+    </div>
+    <div class="row with-margin-top">
+        <div class="col-md-6">
+            <section id="details">
+                <div class="row">
+                    <div class="col-md-6 text-bold">Nombre</div>
+                    <div class="col-md-6">{{ object.name }}</div>
+                    <div class="col-md-6 text-bold">C&oacute;digo</div>
+                    <div class="col-md-6">{{ object.code }}</div>
+                    <div class="col-md-6 text-bold">Precio por Hora</div>
+                    <div class="col-md-6">${{ object.hourly_price }}</div>
+                    <div class="col-md-6 text-bold">Notas</div>
+                    <div class="col-md-6">{{ object.notes }}</div>
+                    <div class="col-md-6 text-bold">Habilitado</div>
+                    <div class="col-md-6">{% if object.enabled %}S&iacute;{% else %}No{% endif %}</div>
+                </div>
+            </section>
+        </div>
+        <div class="col-md-6">
+            <section id="actions">
+                <div class="btn-group pull-right">
+                    {% if perms.materials.can_change_workforce %}<a href="{% url 'materials:workforces-update' pk=object.pk %}" class="btn btn-default">Modificar Mano de Obra</a>{% endif %}
+                    {% if perms.materials.can_delete_workforce %}<a href="{% url 'materials:workforces-delete' pk=object.pk %}" class="btn btn-default">Eliminar Mano de Obra</a>{% endif %}
+                </div>
+            </section>
+        </div>
+    </div>
+{% endblock %}

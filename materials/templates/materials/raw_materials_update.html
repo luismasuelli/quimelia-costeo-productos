@@ -1,0 +1,37 @@
+{% extends 'main/base.html' %}
+{% load bootstrap3 %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Modificar Materia Prima</h1>
+            {% if perms.materials.can_view_rawmaterial %}<a href="{% url 'materials:rawmaterial-detail' pk=object.pk %}">Volver a la vista</a>{% endif %}
+        </div>
+    </div>
+    <div class="row with-margin-top">
+        <div class="col-md-12">
+            <section id="update-form">
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="row">
+                                <div class="col-md-6">{% bootstrap_field form.name %}</div>
+                                <div class="col-md-6">{% bootstrap_field form.code %}</div>
+                                <div class="col-md-6">{% bootstrap_field form.kg_price %}</div>
+                                <div class="col-md-6">{% bootstrap_field form.special %}</div>
+                                <div class="col-md-6">{% bootstrap_field form.notes %}</div>
+                                <div class="col-md-6">
+                                    {% bootstrap_label form.enabled.label %}
+                                    {% bootstrap_field form.enabled show_label=False %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group text-center">
+                        {% bootstrap_button 'Actualizar' 'submit' 'save' 'btn btn-lg btn-primary btn-block main-action' %}
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+{% endblock %}

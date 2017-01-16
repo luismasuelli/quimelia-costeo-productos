@@ -1,0 +1,80 @@
+{% extends 'main/base.html' %}
+{% load bootstrap3 %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Mano de Obra</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <section id="search" class="pull-left">
+                <form action="" method="get" class="form-inline">
+                    {% bootstrap_form form %}
+                    {% bootstrap_button '' 'submit' 'search' 'btn btn-primary' %}
+                </form>
+            </section>
+            <section id="actions" class="pull-right">
+                {% if perms.materials.can_add_workforce %}
+                    <a href="{% url 'materials:workforces-create' %}" class="btn btn-default">Agregar Mano de Obra</a>
+                {% endif %}
+            </section>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <section id="list">
+                <table class="table table-bordered table-stripped">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nombre</th>
+                        <th>C&oacute;digo</th>
+                        <th>Precio por Hora</th>
+                        <th>Notas</th>
+                        <th>Habilitado</th>
+                        <th>Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for workforce in object_list %}
+                        <tr>
+                            <td>{{ workforce.pk }}</td>
+                            <td>{{ workforce.name }}</td>
+                            <td>{{ workforce.code }}</td>
+                            <td style="text-align: right">${{ workforce.hourly_price }}</td>
+                            <td>{{ workforce.notes }}</td>
+                            <td>{% if workforce.enabled %}S&iacute;{% else %}No{% endif %}</td>
+                            <td>
+                                {% if perms.materials.can_view_workforces %}
+                                    <a href="{% url 'materials:workforces-detail' pk=workforce.pk %}">Ver</a>
+                                {% endif %}
+                                {% if perms.materials.can_delete_workforces %}
+                                    <a href="{% url 'materials:workforces-delete' pk=workforce.pk %}">Eliminar</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td align="center" colspan="7">No hay ninguna mano de obra cargada</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {% if is_paginated and page_obj.has_other_pages %}
+                    <span class="page-links">
+                        {% if page_obj.has_previous %}
+                            <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+                        {% endif %}
+                        <span class="page-current">
+                            P&aacute;gina {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
+                        </span>
+                        {% if page_obj.has_next %}
+                            <a href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+                        {% endif %}
+                    </span>
+                {% endif %}
+            </section>
+        </div>
+    </div>
+{% endblock %}

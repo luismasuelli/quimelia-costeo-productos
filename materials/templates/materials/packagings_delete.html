@@ -1,0 +1,25 @@
+{% extends 'main/base.html' %}
+{% load bootstrap3 %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Eliminar Envase</h1>
+            {% if perms.materials.can_view_packaging %}<a href="{% url 'materials:packagings-detail' pk=object.pk %}">Volver a la vista</a>{% endif %}
+            {% if perms.materials.can_list_packaging %}<a href="{% url 'materials:packagings-list' %}">Volver a la lista</a>{% endif %}
+        </div>
+    </div>
+    <div class="row with-margin-top">
+        <div class="col-md-12">
+            <section id="delete-form">
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <div>
+                        &iquest;Realmente desea eliminar el envase "{{ object.name }} ({{ object.code }})"?
+                        Esta acci&oacute;n no puede deshacerse luego.
+                        {% bootstrap_button 'Estoy seguro. Eliminar' 'submit' 'delete' 'btn btn-primary main-action' %}
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+{% endblock %}

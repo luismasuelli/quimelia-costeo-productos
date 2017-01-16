@@ -1,0 +1,38 @@
+{% extends 'main/base.html' %}
+{% load bootstrap3 %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Datos de la Materia Prima</h1>
+            {% if perms.materials.can_list_rawmaterial %}<a href="{% url 'materials:rawmaterials-list' %}">Volver a la lista</a>{% endif %}
+        </div>
+    </div>
+    <div class="row with-margin-top">
+        <div class="col-md-6">
+            <section id="details">
+                <div class="row">
+                    <div class="col-md-6 text-bold">Nombre</div>
+                    <div class="col-md-6">{{ object.name }}</div>
+                    <div class="col-md-6 text-bold">C&oacute;digo</div>
+                    <div class="col-md-6">{{ object.code }}</div>
+                    <div class="col-md-6 text-bold">Precio por Kg</div>
+                    <div class="col-md-6">${{ object.kg_price }}</div>
+                    <div class="col-md-6 text-bold">Especial</div>
+                    <div class="col-md-6">{{ object.get_special_display }}</div>
+                    <div class="col-md-6 text-bold">Notas</div>
+                    <div class="col-md-6">{{ object.notes }}</div>
+                    <div class="col-md-6 text-bold">Habilitado</div>
+                    <div class="col-md-6">{% if object.enabled %}S&iacute;{% else %}No{% endif %}</div>
+                </div>
+            </section>
+        </div>
+        <div class="col-md-6">
+            <section id="actions">
+                <div class="btn-group pull-right">
+                    {% if perms.materials.can_change_rawmaterial %}<a href="{% url 'materials:rawmaterials-update' pk=object.pk %}" class="btn btn-default">Modificar Materia Prima</a>{% endif %}
+                    {% if perms.materials.can_delete_rawmaterial %}<a href="{% url 'materials:rawmaterials-delete' pk=object.pk %}" class="btn btn-default">Eliminar Materia Prima</a>{% endif %}
+                </div>
+            </section>
+        </div>
+    </div>
+{% endblock %}

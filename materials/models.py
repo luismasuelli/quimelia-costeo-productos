@@ -1,12 +1,15 @@
 from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils.translation import ugettext as _
 from catalog.models import CatalogModel
 
 
+
 class WorkForce(CatalogModel):
 
-    hourly_price = models.DecimalField(max_digits=7, decimal_places=3, verbose_name=_('Hourly Price'))
+    hourly_price = models.DecimalField(max_digits=7, decimal_places=3, validators=[MinValueValidator(0.001)],
+                                       verbose_name=_('Hourly Price'))
 
     class Meta:
         verbose_name = _('Work Force')
@@ -19,7 +22,8 @@ class WorkForce(CatalogModel):
 
 class Packaging(CatalogModel):
 
-    price = models.DecimalField(max_digits=7, decimal_places=3, verbose_name=_('Price'))
+    price = models.DecimalField(max_digits=7, decimal_places=3, validators=[MinValueValidator(0.001)],
+                                verbose_name=_('Price'))
 
     class Meta:
         verbose_name = _('Packaging')
@@ -38,7 +42,8 @@ class RawMaterial(CatalogModel):
     )
 
     special = models.CharField(max_length=10, choices=SPECIAL_TYPES, null=True, blank=True)
-    kg_price = models.DecimalField(max_digits=7, decimal_places=3, verbose_name=_('Price per Kg'))
+    kg_price = models.DecimalField(max_digits=7, decimal_places=3, validators=[MinValueValidator(0.001)],
+                                   verbose_name=_('Price per Kg'))
 
     class Meta:
         verbose_name = _('Raw Material')

@@ -1,0 +1,80 @@
+{% extends 'main/base.html' %}
+{% load bootstrap3 %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Envases</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <section id="search" class="pull-left">
+                <form action="" method="get" class="form-inline">
+                    {% bootstrap_form form %}
+                    {% bootstrap_button '' 'submit' 'search' 'btn btn-primary' %}
+                </form>
+            </section>
+            <section id="actions" class="pull-right">
+                {% if perms.contacts.can_add_entity %}
+                    <a href="{% url 'materials:packagings-create' %}" class="btn btn-default">Agregar Envase</a>
+                {% endif %}
+            </section>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <section id="list">
+                <table class="table table-bordered table-stripped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nombre</th>
+                            <th>C&oacute;digo</th>
+                            <th>Precio</th>
+                            <th>Notas</th>
+                            <th>Habilitado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for packaging in object_list %}
+                        <tr>
+                            <td>{{ packaging.pk }}</td>
+                            <td>{{ packaging.name }}</td>
+                            <td>{{ packaging.code }}</td>
+                            <td style="text-align: right">${{ packaging.price }}</td>
+                            <td>{{ packaging.notes }}</td>
+                            <td>{% if packaging.enabled %}S&iacute;{% else %}No{% endif %}</td>
+                            <td>
+                                {% if perms.materials.can_view_packaging %}
+                                <a href="{% url 'materials:packagings-detail' pk=packaging.pk %}">Ver</a>
+                                {% endif %}
+                                {% if perms.materials.can_delete_packaging %}
+                                <a href="{% url 'materials:packagings-delete' pk=packaging.pk %}">Eliminar</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td align="center" colspan="7">No hay ning&uacute;n envase cargado</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {% if is_paginated and page_obj.has_other_pages %}
+                    <span class="page-links">
+                        {% if page_obj.has_previous %}
+                            <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+                        {% endif %}
+                        <span class="page-current">
+                            P&aacute;gina {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
+                        </span>
+                        {% if page_obj.has_next %}
+                            <a href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+                        {% endif %}
+                    </span>
+                {% endif %}
+            </section>
+        </div>
+    </div>
+{% endblock %}
