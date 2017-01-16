@@ -17,14 +17,18 @@ from django.conf.urls import url, include
 from django.contrib import admin
 import geo.admin
 import contacts.admin
+import materials.admin
 import contacts.urls
+import materials.urls
 import main.urls
 
 geo.admin.register(admin.site)
 contacts.admin.register(admin.site)
+materials.admin.register(admin.site)
 
 urlpatterns = [
     url(r'', include(main.urls)),
     url(r'^contacts/', include(contacts.urls)),
+    url(r'^materials/', include(materials.urls)),
     url(r'^admin/', admin.site.urls),
 ]
