@@ -37,7 +37,7 @@ Es una pantalla con una pregunta de si quiere borrar o no cierta entidad. No pod
 1.4. Vista para ver una entidad. En la misma, ademas de ver los datos, deberiamos tener una seccion donde administramos
   las cuentas de cliente (ver más adelante para más detalles) de dicho cliente.
 
-1.5. Vista para editar entidades (get, post).
+1.5. Vista para editar una entidad (get, post).
 
 Es un formulario normal para actualizar una entidad. Validará o no. Al terminar, volvemos al mismo formulario.
 Debería tener algún tipo de enlace para regresar al listado principal.
@@ -79,7 +79,7 @@ Es una pantalla con una pregunta de si quiere borrar o no cierta cuenta. No podr
 2.4. Vista para ver una cuenta. En la misma se verán los datos básicos de la entidad y el área, como así un mini
   dashboard (sobre en el que en realidad mucha influencia no tendríamos).
 
-2.5. Vista para editar entidades (get, post).
+2.5. Vista para editar una cuenta (get, post).
 
 Es un formulario normal para actualizar una cuenta. Validará o no. Al terminar, volvemos al mismo formulario.
 Debería tener algún tipo de enlace para regresar al listado principal (vista de la entidad).

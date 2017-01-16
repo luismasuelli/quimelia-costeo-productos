@@ -22,6 +22,10 @@ class EntityCountry(CatalogModel):
 
     special = models.CharField(max_length=10, choices=SPECIAL_TYPES, null=True, blank=True)
 
+    class Meta:
+        verbose_name = _('Entity Country')
+        verbose_name_plural = _('Entity Countries')
+
     def is_homeland(self):
         return self.special == self.SPECIAL_TYPE_HOMELAND
 
@@ -56,6 +60,15 @@ class Entity(TrackedLive):
     address = models.CharField(max_length=128, verbose_name=_('Address'))
     city = CatalogFK(City, verbose_name=_('City'))
     provider = models.BooleanField(default=False, verbose_name=_('Is Provider'))
+
+    class Meta:
+        unique_together = (('identification_country', 'identification'),)
+        verbose_name = _('Entity')
+        verbose_name_plural = _('Entities')
+        permissions = (
+            ('list_entity', 'Can list Entity'),
+            ('view_entity', 'Can view Entity'),
+        )
 
     def in_homeland(self):
         return self.identification_country.is_homeland()
@@ -93,15 +106,6 @@ class Entity(TrackedLive):
             if not re.match(r'^[a-zA-Z0-9]{8,}$', self.identification):
                 raise ValidationError(_(u'Invalid passport'), 'invalid-content')
 
-    class Meta:
-        unique_together = (('identification_country', 'identification'),)
-        verbose_name = _('Entity')
-        verbose_name_plural = _('Entities')
-        permissions = (
-            ('list_entity', 'List Entity'),
-            ('view_entity', 'View Entity'),
-        )
-
 
 class ServiceArea(CatalogModel):
     """
@@ -127,6 +131,6 @@ class ClientAccount(TrackedLive):
         verbose_name = _('Client Account')
         verbose_name_plural = _('Client Accounts')
         permissions = (
-            ('list_clientaccount', 'List Client Account'),
-            ('view_clientaccount', 'View Client Account'),
+            ('list_clientaccount', 'Can list Client Account'),
+            ('view_clientaccount', 'Can view Client Account'),
         )

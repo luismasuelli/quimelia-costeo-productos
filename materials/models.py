@@ -1,22 +1,33 @@
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import ugettext as _
-from grimoire.django.tracked.models import TrackedLive
-import re
-from support.validators.regex import NameRegexValidator
-from django.core.validators import RegexValidator
 from catalog.models import CatalogModel
-from catalog.fields import CatalogFK
 
 
 class WorkForce(CatalogModel):
 
     hourly_price = models.DecimalField(max_digits=7, decimal_places=3, verbose_name=_('Hourly Price'))
 
+    class Meta:
+        verbose_name = _('Work Force')
+        verbose_name_plural = _('Work Forces')
+        permissions = (
+            ('list_workforce', 'Can list Work Force'),
+            ('view_workforce', 'Can view Work Force'),
+        )
+
 
 class Packaging(CatalogModel):
 
     price = models.DecimalField(max_digits=7, decimal_places=3, verbose_name=_('Price'))
+
+    class Meta:
+        verbose_name = _('Packaging')
+        verbose_name_plural = _('Packagings')
+        permissions = (
+            ('list_packaging', 'Can list Packaging'),
+            ('view_packaging', 'Can view Packaging'),
+        )
 
 
 class RawMaterial(CatalogModel):
@@ -28,6 +39,14 @@ class RawMaterial(CatalogModel):
 
     special = models.CharField(max_length=10, choices=SPECIAL_TYPES, null=True, blank=True)
     kg_price = models.DecimalField(max_digits=7, decimal_places=3, verbose_name=_('Price per Kg'))
+
+    class Meta:
+        verbose_name = _('Raw Material')
+        verbose_name_plural = _('Raw Materials')
+        permissions = (
+            ('list_rawmaterial', 'Can list Raw Material'),
+            ('view_rawmaterial', 'Can view Raw Material'),
+        )
 
     def clean(self):
         if self.special:
