@@ -7,7 +7,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.utils.translation import ugettext_lazy as _
 from support.search.views import SearchListView
 from main.views import BaseContextMixin
-from .models import WorkForce, RawMaterial, Packaging
+from .models import WorkForce, RawMaterial, Packaging, Label
 from .forms import WorkForceForm, RawMaterialForm, PackagingForm
 
 
@@ -127,6 +127,65 @@ class PackagingDelete(BaseContextMixin, PermissionRequiredMixin, DeleteView):
 class PackagingDetail(BaseContextMixin, PermissionRequiredMixin, DetailView):
     permission_required = 'materials.view_packaging'
     model = Packaging
+
+
+class LabelsList(BaseContextMixin, PermissionRequiredMixin, SearchListView):
+    permission_required = 'materials.list_label'
+    # queryset = Labels.objects.annotate(...)
+    search_fields = ('name', 'code', 'notes')
+    model = Label
+
+
+class LabelCreate(BaseContextMixin, PermissionRequiredMixin, SuccessMessageMixin, CreateView):
+    permission_required = 'materials.add_label'
+    form_class = PackagingForm
+    model = Label
+    success_url = reverse_lazy('materials:labels-list')
+
+    def get_success_message(self, cleaned_data):
+        return _('Label "%(name)s" (%(code)s) successfully created') % {
+            'name': self.object.name, 'code': self.object.code
+        }
+
+
+class LabelUpdate(BaseContextMixin, PermissionRequiredMixin, SuccessMessageMixin, UpdateView):
+    permission_required = 'materials.change_label'
+    form_class = PackagingForm
+    model = Label
+
+    def get_success_message(self, cleaned_data):
+        return _('Label "%(name)s" (%(code)s) successfully updated') % {
+            'name': self.object.name, 'code': self.object.code
+        }
+
+    def get_success_url(self):
+        return reverse('materials:labels-update', kwargs={'pk': self.object.pk})
+
+
+class LabelDelete(BaseContextMixin, PermissionRequiredMixin, DeleteView):
+    permission_required = 'materials.delete_label'
+    model = Label
+    success_url = reverse_lazy('materials:labels-list')
+
+    def post(self, request, *args, **kwargs):
+        try:
+            result = self.delete(request, *args, **kwargs)
+            message = _('Label "%(name)s" (%(code)s) successfully deleted') % {
+                'name': self.object.name, 'code': self.object.code
+            }
+            messages.success(self.request, message)
+            return result
+        except ProtectedError:
+            message = _('Cannot delete label "%(name)s" (%(code)s) since it is in use') % {
+                'name': self.object.name, 'code': self.object.code
+            }
+            messages.error(self.request, message)
+            return self.get(request, *args, **kwargs)
+
+
+class LabelDetail(BaseContextMixin, PermissionRequiredMixin, DetailView):
+    permission_required = 'materials.view_label'
+    model = Label
 
 
 class RawMaterialsList(BaseContextMixin, PermissionRequiredMixin, SearchListView):

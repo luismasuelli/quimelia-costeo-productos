@@ -34,6 +34,24 @@ class Packaging(CatalogModel):
         )
 
 
+class Label(CatalogModel):
+    """
+    Products may have a label. It is not mandatory since industrial products will not have.
+      However, each label will have its price.
+    """
+
+    price = models.DecimalField(max_digits=7, decimal_places=3, validators=[MinValueValidator(0.001)],
+                                verbose_name=_('Price'))
+
+    class Meta:
+        verbose_name = _('Label')
+        verbose_name_plural = _('Labels')
+        permissions = (
+            ('list_label', 'Can list Label'),
+            ('view_label', 'Can view Label'),
+        )
+
+
 class RawMaterial(CatalogModel):
 
     SPECIAL_TYPE_WATER = 'water'

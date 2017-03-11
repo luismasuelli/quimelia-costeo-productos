@@ -27,13 +27,14 @@
                     </li>
                     -->
                 {% endif %}
-                {% if perms.materials.can_list_rawmaterial or perms.materials.can_list_workforce or perms.materials.can_list_packaging %}
+                {% if perms.materials.can_list_rawmaterial or perms.materials.can_list_workforce or perms.materials.can_list_packaging or perms.materials.can_list_label %}
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Insumos <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             {% if perms.materials.can_list_rawmaterial %}<li><a href="{% url 'materials:rawmaterials-list' %}">Materias Primas</a></li>{% endif %}
                             {% if perms.materials.can_list_workforce %}<li><a href="{% url 'materials:workforces-list' %}">Mano de Obra</a></li>{% endif %}
                             {% if perms.materials.can_list_packaging %}<li><a href="{% url 'materials:packagings-list' %}">Envases</a></li>{% endif %}
+                            {% if perms.materials.can_list_label %}<li><a href="{% url 'materials:labels-list' %}">Etiquetas</a></li>{% endif %}
                         </ul>
                     </li>
                 {% endif %}
@@ -48,7 +49,10 @@
                         Bienvenido {{ user.full_name }}<span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="{% url 'main:password-change' %}">Cambiar contrase&ntilde;a</a></li>
+                        {% if user.is_staff %}
+                        <li><a href="{% url 'admin:index' %}">Portal Administrativo</a></li>
+                        {% endif %}
+                        <li><a href="{% url 'main:password-change' %}">Cambiar Contrase&ntilde;a</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="{% url 'main:logout' %}">Salir</a></li>
                     </ul>

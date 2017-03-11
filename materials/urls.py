@@ -26,6 +26,17 @@ urlpatterns = [
     url(r'^packagings/(?P<pk>\d+)/delete$', views.PackagingDelete.as_view(template_name='materials/packagings_delete.html'),
         name='packagings-delete'),
 
+    url(r'^labels$', views.PackagingsList.as_view(template_name='materials/labels_list.html', paginate_by=10,
+                                                  search_form_label='Buscar'), name='labels-list'),
+    url(r'^labels/create$', views.PackagingCreate.as_view(template_name='materials/labels_create.html'),
+        name='labels-create'),
+    url(r'^labels/(?P<pk>\d+)$', views.PackagingDetail.as_view(template_name='materials/labels_view.html'),
+        name='labels-detail'),
+    url(r'^labels/(?P<pk>\d+)/update$', views.PackagingUpdate.as_view(template_name='materials/labels_update.html'),
+        name='labels-update'),
+    url(r'^labels/(?P<pk>\d+)/delete$', views.PackagingDelete.as_view(template_name='materials/labels_delete.html'),
+        name='labels-delete'),
+
     url(r'^rawmaterials$', views.RawMaterialsList.as_view(template_name='materials/raw_materials_list.html', paginate_by=10,
                                                   search_form_label='Buscar'), name='rawmaterials-list'),
     url(r'^rawmaterials/create$', views.RawMaterialCreate.as_view(template_name='materials/raw_materials_create.html'),
